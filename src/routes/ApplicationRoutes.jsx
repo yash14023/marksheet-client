@@ -1,9 +1,10 @@
 import React from "react";
 import { useUser } from "../contexts/UserContext";
 import { Toaster } from "react-hot-toast";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Main from "../pages/Main/Main";
 import Layout from "../layout/Layout";
+import Marksheet from "../pages/Marksheet/Marksheet";
 
 const ApplicationRoutes = () => {
   const { user } = useUser();
@@ -23,10 +24,12 @@ const ApplicationRoutes = () => {
           {user ? (
             <>
               <Route path="/" element={<Main />} />
+              <Route path="/marksheet" element={<Marksheet />} />
             </>
           ) : (
             <>
               <Route path="/" element={<Main />} />
+              <Route path="/marksheet" element={<Navigate to="/" />} />
             </>
           )}
         </Routes>

@@ -7,7 +7,7 @@ const Credentials = () => {
   const [UID, setUID] = useState("");
 
   const { setUser } = useUser();
-  const { students } = useDataStore();
+  const { students, course } = useDataStore();
 
   const handleClick = () => {
     if (!UID) {
@@ -16,9 +16,20 @@ const Credentials = () => {
     }
     let foundStudent = null;
     for (const batch in students) {
-      for (const course in students[batch]) {
-        for (let student of students[batch][course].students) {
+      for (const courseLocal in students[batch]) {
+        for (let student of students[batch][courseLocal].students) {
           if (student.uid.toLowerCase() === UID.toLocaleLowerCase()) {
+            for (const sem in course.data[batch][courseLocal]) {
+              for (const sub of course.data[batch][courseLocal][sem].subjects) {
+                for (const examType in sub.status) {
+                  if (sub.status[examType] !== "published") {
+                    if (student.hasOwnProperty(sem)) {
+                      delete student[sem];
+                    }
+                  }
+                }
+              }
+            }
             foundStudent = student;
             break;
           }
@@ -27,7 +38,6 @@ const Credentials = () => {
     }
     if (foundStudent) {
       setUser(foundStudent);
-      console.log(foundStudent);
       return;
     }
     toast.error("UID Not Found");
