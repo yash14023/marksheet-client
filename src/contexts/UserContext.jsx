@@ -12,10 +12,13 @@ export const useUser = () => {
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [courseData, setCourseData] = useState(null);
 
   const value = {
     user,
     setUser,
+    courseData,
+    setCourseData,
   };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
